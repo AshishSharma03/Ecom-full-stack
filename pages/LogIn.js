@@ -1,4 +1,4 @@
-import { Box, Button, List, ListItem, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, List, ListItem, TextField, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { Store } from "../utils/store";
@@ -18,6 +18,7 @@ function LogIn() {
   const router = useRouter();
   const { redirect } = router.query; // login?redirect=/shipping
   const { state, dispatch } = useContext(Store);
+  const [loadButton,setloadButton] = useState(false)
   const { userInfo } = state;
   useEffect(() => {
     if (userInfo) {
@@ -26,6 +27,7 @@ function LogIn() {
   }, []);
 
   const submitHandler = async ({ email, password }) => {
+    setloadButton(true)
     console.log(email, password);
     closeSnackbar();
     try {
@@ -35,12 +37,13 @@ function LogIn() {
       });
 
       dispatch({ type: "USER_LOGIN", payload: data });
+      setloadButton(false)
       Cookies.set("userInfo", JSON.stringify(data));
       router.push(redirect || "/");
       enqueueSnackbar("Log in", { variant: "success" });
 
     } catch (err) {
-
+      setloadButton(false)
       enqueueSnackbar(
         err.response.data ? err.response.data.message : err.message,
         { variant: "error" }
@@ -115,8 +118,8 @@ function LogIn() {
             ></Controller>
           </ListItem>
           <ListItem>
-            <Button variant="contained" type="submit" fullWidth color="primary">
-              Login
+            <Button disabled={loadButton} sx={{fontWeight:"600",padding:"10px", display:"flex",alignItems:'center',justifyContent:'center'}} variant="contained" type="submit" fullWidth color="primary">
+              {(!loadButton)?"Login":<CircularProgress thickness={6} size="25px" />}
             </Button>
           </ListItem>
           <ListItem>

@@ -1,5 +1,5 @@
-import { List,ListItem, Typography,TextField ,Button, Box} from '@mui/material'
-import React,{useEffect,useContext} from 'react'
+import { List,ListItem, Typography,TextField ,Button, Box, CircularProgress} from '@mui/material'
+import React,{useEffect,useContext, useState} from 'react'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -18,6 +18,7 @@ function Register() {
     const { redirect} = router.query
     const { state , dispatch} = useContext(Store)
     const { userInfo } =  state;
+    const [loadButton,setloadButton] = useState(false)
     useEffect(()=>{
 
         if(userInfo){
@@ -27,12 +28,15 @@ function Register() {
     },[])
     
         const submitHandler = async ({name,email , password,confirmPassword }) =>{
-            // e.preventDefault();
+
             closeSnackbar();
-            // alert("event handler workder")
-            //  console.log(name,email,password,confirmPassword)
+         
             if(password !== confirmPassword){
-                window.alert("passwords don't match");
+              enqueueSnackbar(
+                `passwords don't match`,
+                 { variant: 'error' }
+               )
+           
                 return;
             }
             console.log(name,email,password)
@@ -183,8 +187,8 @@ function Register() {
             ></Controller>
           </ListItem>
           <ListItem>
-            <Button variant="contained" type="submit" fullWidth color="primary">
-              Register
+            <Button  disabled={loadButton} sx={{fontWeight:"600",padding:"10px", display:"flex",alignItems:'center',justifyContent:'center'}}variant="contained" type="submit" fullWidth color="primary">
+            {(!loadButton)?"Sign up":<CircularProgress thickness={6} size="25px" />}
             </Button>
           </ListItem>
           <ListItem>
