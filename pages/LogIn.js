@@ -1,4 +1,4 @@
-import { Button, List, ListItem, TextField, Typography } from "@mui/material";
+import { Box, Button, List, ListItem, TextField, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { Store } from "../utils/store";
@@ -24,10 +24,8 @@ function LogIn() {
       router.push("/");
     }
   }, []);
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+
   const submitHandler = async ({ email, password }) => {
-    // e.preventDefault();
     console.log(email, password);
     closeSnackbar();
     try {
@@ -40,19 +38,22 @@ function LogIn() {
       Cookies.set("userInfo", JSON.stringify(data));
       router.push(redirect || "/");
       enqueueSnackbar("Log in", { variant: "success" });
-      // alert('succss login');
+
     } catch (err) {
-      // console.log(err)
+
       enqueueSnackbar(
         err.response.data ? err.response.data.message : err.message,
         { variant: "error" }
       );
-      // alert(err.response.data ? err.response.data.message : err.message);
+    
     }
   };
   return (
     <Layout title="Login">
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"75vh"}}>
+
+      
+      <form style={{width:"400px"}} onSubmit={handleSubmit(submitHandler)}>
         <Typography variant="h4">Login</Typography>
         <List>
           <ListItem>
@@ -123,7 +124,7 @@ function LogIn() {
             <Typography component={'a'} href="/register">Register</Typography>
           </ListItem>
         </List>
-      </form>
+      </form></Box>
     </Layout>
   );
 }

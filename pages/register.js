@@ -1,4 +1,4 @@
-import { List,ListItem, Typography,TextField ,Button} from '@mui/material'
+import { List,ListItem, Typography,TextField ,Button, Box} from '@mui/material'
 import React,{useEffect,useContext} from 'react'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router';
@@ -62,7 +62,8 @@ function Register() {
 
   return (
     <Layout title="register">
-            <form onSubmit={handleSubmit(submitHandler)}>
+      <Box  sx={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"75vh"}}>
+            <form  style={{width:"400px"}}onSubmit={handleSubmit(submitHandler)}>
                 <Typography>Register</Typography>
                 <List>
                     <ListItem>
@@ -194,6 +195,7 @@ function Register() {
           </ListItem>
         </List>
       </form>
+      </Box>
     </Layout>
   )
 }

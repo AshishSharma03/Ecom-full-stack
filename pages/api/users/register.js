@@ -1,32 +1,43 @@
-import nc from 'next-connect';
 import bcrypt from 'bcryptjs';
-import User from '../../../model/UserSchema';
 import { signToken } from '../../../utils/auth';
 import dbConnect from '../../../utils/db';
+import User from '../../../model/UserSchema';
 
-const handler = nc();
-
-handler.post(async (req, res) => {
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
   await dbConnect();
-  const newUser = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password),
-    isAdmin: false,
-  });
-  const user = await newUser.save();
-  const token = signToken(user);
-  res.send({
-    token,
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    isAdmin: user.isAdmin,
-  });
 
-  res.status(401).send({message: 'Invalid email or password'});
-   res.status(500).send({message:'Check your connection'})
-});
+  const { name, email, password } = req.body;
 
-export default handler;
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password: bcrypt.hashSync(password),
+      isAdmin: false,
+    });
+
+    const user = await newUser.save();
+    const token = signToken(user);
+
+    return res.status(200).json({
+      token,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}

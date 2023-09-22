@@ -5,6 +5,7 @@ import { Store } from '../utils/store';
 import Layout from '../components/Layout';
 import CheckoutWizard from '../components/checkoutWizard';
 import {
+  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -45,9 +46,9 @@ export default function Payment() {
   };
   return (
     <Layout title="Payment Method">
-        <div style={{padding:"20px"}}></div>
+          <Box sx={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",minHeight:"75vh"}}>
       <CheckoutWizard activeStep={2}></CheckoutWizard>
-      <form  onSubmit={submitHandler}>
+      <form  style={{width:"400px"}} onSubmit={submitHandler}>
         <Typography component="h6" variant="h6">
           Payment Method
         </Typography>
@@ -95,6 +96,7 @@ export default function Payment() {
           </ListItem>
         </List>
       </form>
+      </Box>
     </Layout>
   );
 }

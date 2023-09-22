@@ -2,7 +2,7 @@ import React, { useContext,useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Store } from '../utils/store';
 import Layout from '../components/Layout';
-import { List,ListItem, Typography,TextField ,Button} from '@mui/material'
+import { List,ListItem, Typography,TextField ,Button, Box} from '@mui/material'
 import CheckoutWizard from '../components/checkoutWizard';
 import { Controller, useForm } from 'react-hook-form';
 import Cookies from 'js-cookie'
@@ -53,10 +53,10 @@ function Shipping() {
 
   return (
     <Layout title="Shipping Address">
-      <div style={{padding:"20px"}}></div>
+      <Box sx={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",minHeight:"75vh"}}>
     <CheckoutWizard activeStep={1} />
-    <form  onSubmit={handleSubmit(submitHandler)} >
-      <Typography component="h6" variant="h6">
+    <form style={{width:"400px"}} onSubmit={handleSubmit(submitHandler)} >
+      <Typography component="h6" variant="h6" sx={{fontWeight:"800",textAlign:'center',padding:"10px"}}>
         Shipping Address
       </Typography>
       <List>
@@ -207,6 +207,7 @@ function Shipping() {
         </ListItem>
       </List>
     </form>
+    </Box>
   </Layout>
   )
 }
