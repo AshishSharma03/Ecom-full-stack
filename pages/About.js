@@ -1,7 +1,6 @@
 import { Button, Container, Stack,Typography } from '@mui/material'
 import Head from 'next/head';
 import React from 'react'
-import Link from '../src/Link';
 function About() {
   return (
     <>
