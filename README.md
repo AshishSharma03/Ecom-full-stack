@@ -8,6 +8,7 @@ This is an e-commerce website built using Next.js and a variety of other technol
 - **@mui/material**
 - **bcryptjs**
 - **js-cookie**
+- - **Redux**
 - **jsonwebtoken**
 - **mongoose**
 - **next-connect**
